@@ -1,5 +1,13 @@
 import { apiClient } from "@/lib/api/client";
 
+export type DoctorAppointmentStatus =
+  | "requested"
+  | "confirmed"
+  | "rejected"
+  | "completed"
+  | "cancelled"
+  | "no_show";
+
 export type DoctorAppointment = {
   id: string;
   doctor_id: string;
@@ -8,15 +16,18 @@ export type DoctorAppointment = {
   patient_email: string;
   starts_at: string;
   ends_at: string;
-  status: string;
+  status: DoctorAppointmentStatus;
   reason: string | null;
   booking_reference: string;
   created_at: string;
 };
 
-export type DoctorAppointmentStatus = "completed" | "cancelled" | "no_show";
+export type DoctorAppointmentDecision = "confirmed" | "rejected";
 
-export async function getDoctorAppointments(options?: { status?: string; upcomingOnly?: boolean }) {
+export async function getDoctorAppointments(options?: {
+  status?: DoctorAppointmentStatus;
+  upcomingOnly?: boolean;
+}) {
   const { data } = await apiClient.get<DoctorAppointment[]>("/doctor/appointments", {
     params: {
       status: options?.status,
@@ -27,17 +38,30 @@ export async function getDoctorAppointments(options?: { status?: string; upcomin
 }
 
 export async function getDoctorAppointment(appointmentId: string) {
-  const { data } = await apiClient.get<DoctorAppointment>(`/doctor/appointments/${appointmentId}`);
+  const { data } = await apiClient.get<DoctorAppointment>(
+    `/doctor/appointments/${appointmentId}`,
+  );
   return data;
 }
 
 export async function updateDoctorAppointmentStatus(
   appointmentId: string,
-  status: DoctorAppointmentStatus,
+  status: "completed" | "cancelled" | "no_show",
 ) {
   const { data } = await apiClient.patch<DoctorAppointment>(
     `/doctor/appointments/${appointmentId}/status`,
     { status },
+  );
+  return data;
+}
+
+export async function decideDoctorAppointment(
+  appointmentId: string,
+  decision: DoctorAppointmentDecision,
+) {
+  const { data } = await apiClient.patch<DoctorAppointment>(
+    `/doctor/appointments/${appointmentId}/decision`,
+    { decision },
   );
   return data;
 }
