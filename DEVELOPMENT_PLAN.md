@@ -31,8 +31,8 @@
 ## Phase 3 — Patient experience
 - [ ] Home dashboard
 - [ ] Doctor discovery
-- [ ] Doctor profile
-- [ ] Doctor availability
+- [x] Doctor profile
+- [x] Doctor availability
 
 ## Phase 4 — Appointments
 - [ ] Slot selection
