@@ -8,12 +8,13 @@ import { secureTokenStorage } from "@/lib/auth/secureStorage";
 import { env } from "@/config/env";
 import { colors, spacing } from "@/theme";
 
+type SignalDescription = { type: "offer" | "answer"; sdp: string };
 type SignalMessage =
   | { type: "ready"; initiator: boolean }
   | { type: "peer_joined" }
   | { type: "peer_left" }
-  | { type: "offer"; sdp: RTCSessionDescriptionInit }
-  | { type: "answer"; sdp: RTCSessionDescriptionInit }
+  | ({ type: "offer" } & { sdp: SignalDescription })
+  | ({ type: "answer" } & { sdp: SignalDescription })
   | { type: "candidate"; candidate: RTCIceCandidateInit };
 
 export default function ConsultationVideoScreen() {
@@ -52,9 +53,9 @@ export default function ConsultationVideoScreen() {
           const pc = new RTCPeerConnection({ iceServers: query.data.ice_servers });
           peerRef.current = pc;
           stream.getTracks().forEach((track) => pc.addTrack(track, stream));
-          pc.addEventListener("track", (event) => { const remote = event.streams?.[0]; if (remote) setRemoteStream(remote); });
-          pc.addEventListener("icecandidate", (event) => { if (event.candidate) send({ type: "candidate", candidate: event.candidate }); });
-          pc.addEventListener("connectionstatechange", () => { setConnected(pc.connectionState === "connected"); if (pc.connectionState === "failed") setError("The video connection failed. Please leave and rejoin."); });
+          pc.ontrack = (event) => { const remote = event.streams?.[0]; if (remote) setRemoteStream(remote); };
+          pc.onicecandidate = (event) => { if (event.candidate) send({ type: "candidate", candidate: event.candidate }); };
+          pc.onconnectionstatechange = () => { setConnected(pc.connectionState === "connected"); if (pc.connectionState === "failed") setError("The video connection failed. Please leave and rejoin."); };
           return pc;
         };
 
@@ -66,16 +67,16 @@ export default function ConsultationVideoScreen() {
           if (message.type === "ready") {
             const pc = createPeer();
             if (message.initiator) {
-              const offer = await pc.createOffer({ offerToReceiveAudio: true, offerToReceiveVideo: true });
+              const offer = await pc.createOffer();
               await pc.setLocalDescription(offer);
-              send({ type: "offer", sdp: offer });
+              send({ type: "offer", sdp: { type: "offer", sdp: offer.sdp ?? "" } });
             }
           } else if (message.type === "offer") {
             const pc = peerRef.current ?? createPeer();
             await pc.setRemoteDescription(new RTCSessionDescription(message.sdp));
             const answer = await pc.createAnswer({ offerToReceiveAudio: true, offerToReceiveVideo: true });
             await pc.setLocalDescription(answer);
-            send({ type: "answer", sdp: answer });
+            send({ type: "answer", sdp: { type: "answer", sdp: answer.sdp ?? "" } });
           } else if (message.type === "answer" && peerRef.current) {
             await peerRef.current.setRemoteDescription(new RTCSessionDescription(message.sdp));
           } else if (message.type === "candidate" && peerRef.current) {
