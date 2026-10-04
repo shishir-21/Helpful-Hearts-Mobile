@@ -1,8 +1,8 @@
-import axios, { type AxiosInstance } from "axios";
+import { create, type AxiosInstance } from "axios";
 import { env } from "@/config/env";
 import { secureTokenStorage } from "@/lib/auth/secureStorage";
 
-export const apiClient: AxiosInstance = axios.create({
+export const apiClient: AxiosInstance = create({
   baseURL: env.EXPO_PUBLIC_API_URL,
   timeout: 15_000,
   headers: { Accept: "application/json", "Content-Type": "application/json" },
@@ -10,6 +10,6 @@ export const apiClient: AxiosInstance = axios.create({
 
 apiClient.interceptors.request.use(async (config) => {
   const token = await secureTokenStorage.getAccessToken();
-  if (token) config.headers.Authorization = `Bearer ${token}`;
+  if (token) config.headers.Authorization = "Bearer " + token;
   return config;
 });
