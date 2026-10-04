@@ -1,13 +1,14 @@
 import type { MedicalRecord } from "./types";
 
-export function getLabReportCategories(records: MedicalRecord[]): string[] {
-  return [...new Set(records.map((record) => record.category.trim()).filter(Boolean))].sort();
-}
+export type LabReportSort = "newest" | "oldest";
 
-export function filterLabReportsByCategory(
+export function sortLabReports(
   reports: MedicalRecord[],
-  category: string
+  sort: LabReportSort
 ): MedicalRecord[] {
-  if (category === "all") return reports;
-  return reports.filter((report) => report.category.trim() === category);
+  return [...reports].sort((a, b) => {
+    const aTime = new Date(a.created_at).getTime();
+    const bTime = new Date(b.created_at).getTime();
+    return sort === "newest" ? bTime - aTime : aTime - bTime;
+  });
 }
