@@ -89,6 +89,8 @@ export default function LabReportsScreen() {
 
       <FlatList
         data={reports}
+        refreshing={recordsQuery.isRefetching}
+        onRefresh={() => void recordsQuery.refetch()}
         keyExtractor={(item) => item.id}
         contentContainerStyle={reports.length ? styles.list : styles.emptyList}
         ListEmptyComponent={
