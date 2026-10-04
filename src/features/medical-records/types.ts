@@ -12,3 +12,21 @@ export const medicalRecordSchema = z.object({
 export const medicalRecordsResponseSchema = z.array(medicalRecordSchema);
 
 export type MedicalRecord = z.infer<typeof medicalRecordSchema>;
+
+export const MEDICAL_RECORD_CATEGORY_LABELS = [
+  "Medical record",
+  "Prescription",
+  "Lab",
+  "Doctor note",
+  "Vaccination",
+  "Allergy",
+  "Medication",
+] as const;
+
+export function getMedicalRecordCategoryLabel(category: string): string {
+  const normalized = category.trim().toLowerCase();
+  const known = MEDICAL_RECORD_CATEGORY_LABELS.find(
+    (value) => value.toLowerCase() === normalized,
+  );
+  return known ?? category.trim() || "Medical record";
+}
