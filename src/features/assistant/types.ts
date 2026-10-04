@@ -25,4 +25,4 @@ export type SendAssistantMessageInput = {
 };
 
 export const SAFETY_NOTICE =
-  "Helpful-Hearts AI provides general health information only. It cannot diagnose conditions or prescribe or change medicines. For severe or emergency symptoms, contact local emergency services or a licensed clinician.";
+  "Helpful-Hearts AI provides general health information only. It cannot diagnose conditions, prescribe medicines, or recommend medication changes. For severe or emergency symptoms, contact local emergency services or a licensed clinician.";
