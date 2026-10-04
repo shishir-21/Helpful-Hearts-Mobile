@@ -6,6 +6,7 @@ jest.mock("@/lib/api/client", () => ({
 
 import { apiClient } from "@/lib/api/client";
 import { getMedicalRecord, getMedicalRecords } from "@/features/medical-records/api";
+import { getMedicalRecordCategoryLabel } from "@/features/medical-records/types";
 
 const mockGet = jest.mocked(apiClient.get);
 
@@ -51,5 +52,14 @@ describe("medical records API", () => {
     mockGet.mockResolvedValueOnce({ data: [{ id: "record-1" }] });
 
     await expect(getMedicalRecords()).rejects.toThrow();
+  });
+});
+
+describe("healthcare record category labels", () => {
+  it("normalizes known categories without changing custom categories", () => {
+    expect(getMedicalRecordCategoryLabel("lab")).toBe("Lab");
+    expect(getMedicalRecordCategoryLabel("Doctor note")).toBe("Doctor note");
+    expect(getMedicalRecordCategoryLabel("Custom category")).toBe("Custom category");
+    expect(getMedicalRecordCategoryLabel("   ")).toBe("Medical record");
   });
 });
