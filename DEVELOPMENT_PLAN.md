@@ -43,12 +43,14 @@
 - [ ] Appointment reminders
 
 ## Phase 5 — AI
-- [ ] AI health assistant
-- [ ] Conversation history
-- [ ] Safety messaging
+- [x] AI health assistant mobile foundation
+- [x] Conversation history UI and API contract
+- [x] Safety messaging and safe error states
 - [ ] Prescription upload
 - [ ] OCR review
 - [ ] Prescription explanation
+
+> Note: The current backend repository does not yet expose AI or prescription endpoints. This phase implements the authenticated, provider-neutral mobile assistant contract without mock medical responses. Prescription/OCR/explanation remain pending until their backend APIs are implemented.
 
 ## Phase 6 — Consultation
 - [ ] Waiting room
@@ -66,3 +68,5 @@
 - [ ] Store release
 
 Every phase must remain runnable and tested before the next feature is merged.
+
+Phase 5 exit note: mobile typecheck, lint, and unit tests must pass before merging. Runtime AI verification requires the backend assistant endpoints to be available.

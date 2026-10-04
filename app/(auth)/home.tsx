@@ -21,6 +21,14 @@ export default function HomeScreen() {
         <Text style={styles.cardAction}>Browse doctors →</Text>
       </Pressable>
 
+      <Pressable style={styles.assistantCard} onPress={() => router.push("/(auth)/assistant")}>
+        <View style={styles.appointmentsText}>
+          <Text style={styles.infoTitle}>AI health assistant</Text>
+          <Text style={styles.infoText}>Ask general health questions with clear safety boundaries.</Text>
+        </View>
+        <Text style={styles.appointmentsAction}>Ask →</Text>
+      </Pressable>
+
       <Pressable style={styles.appointmentsCard} onPress={() => router.push("/(auth)/appointments")}>
         <View style={styles.appointmentsText}>
           <Text style={styles.infoTitle}>My appointments</Text>
@@ -55,6 +63,7 @@ const styles = StyleSheet.create({
   infoCard:{flex:1,padding:spacing.md,borderWidth:1,borderColor:colors.border,borderRadius:16,backgroundColor:colors.surface},
   infoTitle:{fontWeight:"800",color:colors.text,fontSize:14},
   infoText:{fontSize:12,color:colors.textSecondary,lineHeight:18,marginTop:6},
+  assistantCard:{flexDirection:"row",alignItems:"center",justifyContent:"space-between",marginTop:spacing.md,padding:spacing.md,borderWidth:1,borderColor:"#F4CACA",borderRadius:16,backgroundColor:colors.primarySoft},
   appointmentsCard:{flexDirection:"row",alignItems:"center",justifyContent:"space-between",marginTop:spacing.md,padding:spacing.md,borderWidth:1,borderColor:colors.border,borderRadius:16,backgroundColor:colors.surface},
   appointmentsText:{flex:1},
   appointmentsAction:{color:colors.primary,fontWeight:"800",marginLeft:spacing.sm},
