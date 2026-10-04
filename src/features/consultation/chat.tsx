@@ -21,14 +21,10 @@ export default function ConsultationChatScreen() {
     queryFn: () => getConsultationSession(sessionId),
     enabled: Boolean(sessionId),
   });
-  const [messages, setMessages] = useState<ConsultationMessage[]>([]);
+  const [liveMessages, setLiveMessages] = useState<ConsultationMessage[]>([]);
   const [draft, setDraft] = useState("");
   const [connected, setConnected] = useState(false);
   const socketRef = useRef<WebSocket | null>(null);
-
-  useEffect(() => {
-    if (messagesQuery.data) setMessages(messagesQuery.data);
-  }, [messagesQuery.data]);
 
   useEffect(() => {
     if (!sessionQuery.data || !sessionId) return;
@@ -51,7 +47,7 @@ export default function ConsultationChatScreen() {
           message?: ConsultationMessage;
         };
         if (payload.type !== "chat_message" || !payload.message) return;
-        setMessages((current) =>
+        setLiveMessages((current) =>
           current.some((item) => item.id === payload.message?.id)
             ? current
             : [...current, payload.message as ConsultationMessage],
@@ -66,6 +62,16 @@ export default function ConsultationChatScreen() {
       socketRef.current = null;
     };
   }, [sessionQuery.data, sessionId]);
+
+  const messages = useMemo(
+    () => [
+      ...(messagesQuery.data ?? []),
+      ...liveMessages.filter(
+        (live) => !(messagesQuery.data ?? []).some((item) => item.id === live.id),
+      ),
+    ],
+    [messagesQuery.data, liveMessages],
+  );
 
   const send = () => {
     const content = draft.trim();
