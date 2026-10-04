@@ -53,3 +53,13 @@ describe("medical records API", () => {
     await expect(getMedicalRecords()).rejects.toThrow();
   });
 });
+
+
+describe("healthcare record category labels", () => {
+  it("normalizes known Phase 9 categories for display", async () => {
+    const { getMedicalRecordCategoryLabel } = await import("@/features/medical-records/types");
+    expect(getMedicalRecordCategoryLabel("lab")).toBe("Lab");
+    expect(getMedicalRecordCategoryLabel("Doctor note")).toBe("Doctor note");
+    expect(getMedicalRecordCategoryLabel("Custom category")).toBe("Custom category");
+  });
+});
