@@ -37,10 +37,9 @@
 ## Phase 4 — Appointments
 - [x] Slot selection
 - [x] Booking
-- [x] My appointments
-- [ ] Cancellation
-- [ ] Rescheduling
-- [ ] Appointment reminders
+- [x] Cancellation
+- [x] Rescheduling
+- [x] Appointment reminders
 
 ## Phase 5 — AI
 - [x] AI health assistant mobile foundation
@@ -60,15 +59,25 @@
 
 ## Phase 7 — Production hardening
 - [x] Push notifications (token registration, authenticated device persistence, delivery contract, and session cleanup)
+- [x] Appointment-reminder deep linking
 - [x] Analytics privacy abstraction
 - [x] Crash/error monitoring boundary
 - [x] E2E smoke-test foundation
 - [x] Performance instrumentation foundation
 - [x] EAS production build profile and manual CD workflow
+- [x] Android AAB production build workflow
 - [x] Release configuration and store-submission checklist
 - [ ] Store publication (blocked on external Apple/Google developer accounts, signing credentials, and release secrets)
 
-> Phase 7 release boundary: all repository-controlled production-hardening work is complete. Store publication cannot be truthfully automated or marked complete without the external credentials and store accounts above.
+## Phase 8 — Doctor experience
+- [x] Doctor role-aware mobile dashboard
+- [x] Doctor appointment list/detail
+- [x] Doctor appointment status controls
+- [x] Doctor consultation entry
+- [x] Doctor loading/error/empty states
+- [x] Doctor API contract tests
+
+> Repository-controlled implementation is complete through Phase 8. Store publication remains an external release step requiring developer accounts, signing credentials, and release secrets. Forgot/reset password and patient profile remain future product work.
 
 Every phase must remain runnable and tested before the next feature is merged.
 
