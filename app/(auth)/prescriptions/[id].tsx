@@ -136,7 +136,7 @@ export default function PrescriptionDetailScreen() {
           <Text style={styles.sectionTitle}>AI explanation</Text>
           <Text style={styles.explanationText}>{prescription.explanation}</Text>
           <Text style={styles.disclaimer}>
-            Educational information only. Follow your licensed clinician's instructions and ask them before changing any medicine.
+            Educational information only. Follow your licensed clinician&apos;s instructions and ask them before changing any medicine.
           </Text>
         </View>
       ) : null}
