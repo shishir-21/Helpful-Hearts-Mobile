@@ -23,7 +23,7 @@ export default function DoctorsScreen() {
         <Pressable style={styles.button} onPress={() => setSubmitted(query.trim())}><Text style={styles.buttonText}>Search</Text></Pressable>
       </View>
       {doctors.isLoading ? <ActivityIndicator style={styles.loader} /> : null}
-      {doctors.isError ? <Text style={styles.error}>We couldn't load doctors. Please try again.</Text> : null}
+      {doctors.isError ? <Text style={styles.error}>We could not load doctors. Please try again.</Text> : null}
       <FlatList
         data={doctors.data?.items ?? []}
         keyExtractor={(item) => item.id}
