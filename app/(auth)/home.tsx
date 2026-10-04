@@ -48,6 +48,14 @@ export default function HomeScreen() {
         <Text style={styles.appointmentsAction}>Open →</Text>
       </Pressable>
 
+      <Pressable style={styles.prescriptionsCard} onPress={() => router.push("/(auth)/medical-records")}>
+        <View style={styles.appointmentsText}>
+          <Text style={styles.infoTitle}>Medical records</Text>
+          <Text style={styles.infoText}>View your healthcare records and open individual record details.</Text>
+        </View>
+        <Text style={styles.appointmentsAction}>Open →</Text>
+      </Pressable>
+
       <Pressable style={styles.appointmentsCard} onPress={() => router.push("/(auth)/appointments")}>
         <View style={styles.appointmentsText}>
           <Text style={styles.infoTitle}>My appointments</Text>
