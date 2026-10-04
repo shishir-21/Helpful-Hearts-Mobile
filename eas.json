@@ -16,9 +16,7 @@
       "android": {
         "track": "internal"
       },
-      "ios": {
-        "ascAppId": "${EXPO_ASC_APP_ID}"
-      }
+      "ios": {}
     }
   }
 }
