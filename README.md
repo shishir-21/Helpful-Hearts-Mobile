@@ -66,6 +66,18 @@ eas build --platform all --profile production
 
 The repository includes a manual GitHub Actions CD workflow that validates typecheck/lint/tests before starting an EAS build. It requires the `EXPO_TOKEN` repository secret.
 
+### Android AAB
+
+The production Android profile explicitly uses the Android App Bundle format:
+
+```bash
+eas build --platform android --profile production
+```
+
+For a repository-controlled build, run the **Android AAB** GitHub Actions workflow manually. It validates the project first, starts the EAS production Android build, and stores the returned EAS build metadata as a workflow artifact. The actual `.aab` artifact is hosted by EAS and can be downloaded from the build URL reported by EAS.
+
+The workflow requires `EXPO_TOKEN`. Android application credentials/signing are managed through EAS and are intentionally not stored in the repository.
+
 For store submission, configure the EAS account, Android application credentials/signing, Apple Developer credentials, App Store Connect application ID, and required GitHub/EAS secrets. These credentials are intentionally not stored in the repository.
 
 The current project is release-ready from a code/configuration perspective, but it cannot be published to Google Play or the App Store until those external credentials and store accounts are supplied.
