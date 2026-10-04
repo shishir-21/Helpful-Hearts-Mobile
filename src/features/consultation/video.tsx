@@ -65,12 +65,12 @@ export default function ConsultationVideoScreen() {
         ws.onmessage = async (event) => {
           const message = JSON.parse(event.data) as SignalMessage;
           if (message.type === "ready") {
-            const pc = createPeer();
-            if (message.initiator) {
-              const offer = await pc.createOffer();
-              await pc.setLocalDescription(offer);
-              send({ type: "offer", sdp: { type: "offer", sdp: offer.sdp ?? "" } });
-            }
+            createPeer();
+          } else if (message.type === "peer_joined") {
+            const pc = peerRef.current ?? createPeer();
+            const offer = await pc.createOffer();
+            await pc.setLocalDescription(offer);
+            send({ type: "offer", sdp: { type: "offer", sdp: offer.sdp ?? "" } });
           } else if (message.type === "offer") {
             const pc = peerRef.current ?? createPeer();
             await pc.setRemoteDescription(new RTCSessionDescription(message.sdp));
