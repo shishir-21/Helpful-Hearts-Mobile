@@ -29,6 +29,14 @@ export default function HomeScreen() {
         <Text style={styles.appointmentsAction}>Ask →</Text>
       </Pressable>
 
+      <Pressable style={styles.prescriptionsCard} onPress={() => router.push("/(auth)/consultation")}>
+        <View style={styles.appointmentsText}>
+          <Text style={styles.infoTitle}>Consultation history</Text>
+          <Text style={styles.infoText}>View completed appointments and consultation status.</Text>
+        </View>
+        <Text style={styles.appointmentsAction}>Open →</Text>
+      </Pressable>
+
       <Pressable style={styles.prescriptionsCard} onPress={() => router.push("/(auth)/prescriptions")}>
         <View style={styles.appointmentsText}>
           <Text style={styles.infoTitle}>My prescriptions</Text>
