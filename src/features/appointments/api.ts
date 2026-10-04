@@ -15,3 +15,8 @@ export async function getMyAppointment(appointmentId: string) {
   const { data } = await apiClient.get<Appointment>(`/appointments/${appointmentId}`);
   return data;
 }
+
+export async function cancelAppointment(appointmentId: string) {
+  const { data } = await apiClient.post<Appointment>(`/appointments/${appointmentId}/cancel`);
+  return data;
+}
