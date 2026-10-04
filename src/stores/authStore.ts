@@ -1,15 +1,20 @@
 import { create } from "zustand";
+import type { User } from "@/features/auth/types";
 
 type AuthState = {
-  isAuthenticated: boolean;
+  user: User | null;
   isHydrated: boolean;
-  setAuthenticated: (value: boolean) => void;
+  isAuthenticated: boolean;
+  setSession: (user: User) => void;
+  clearSession: () => void;
   setHydrated: (value: boolean) => void;
 };
 
 export const useAuthStore = create<AuthState>((set) => ({
-  isAuthenticated: false,
+  user: null,
   isHydrated: false,
-  setAuthenticated: (value) => set({ isAuthenticated: value }),
+  isAuthenticated: false,
+  setSession: (user) => set({ user, isAuthenticated: true }),
+  clearSession: () => set({ user: null, isAuthenticated: false }),
   setHydrated: (value) => set({ isHydrated: value }),
 }));
