@@ -55,17 +55,12 @@ export default function AssistantScreen() {
   });
 
   const sendMutation = useMutation({
-    mutationFn: async () => {
-      const content = draft.trim();
-      if (!content || !selectedConversationId) {
-        throw new Error("Choose a conversation and enter a message.");
-      }
-      return sendAssistantMessage(selectedConversationId, { content });
-    },
-    onSuccess: async () => {
+    mutationFn: async (input: { conversationId: string; content: string }) =>
+      sendAssistantMessage(input.conversationId, { content: input.content }),
+    onSuccess: async (_message, variables) => {
       setDraft("");
       await queryClient.invalidateQueries({
-        queryKey: ["assistant", "messages", selectedConversationId],
+        queryKey: ["assistant", "messages", variables.conversationId],
       });
       await queryClient.invalidateQueries({ queryKey: conversationKeys });
     },
@@ -80,11 +75,20 @@ export default function AssistantScreen() {
   }
 
   function sendMessage() {
-    if (!selectedConversationId && draft.trim()) {
-      createMutation.mutate();
+    const content = draft.trim();
+    if (!content) return;
+
+    if (!selectedConversationId) {
+      createMutation.mutate(undefined, {
+        onSuccess: (conversation) => {
+          setSelectedConversationId(conversation.id);
+          sendMutation.mutate({ conversationId: conversation.id, content });
+        },
+      });
       return;
     }
-    sendMutation.mutate();
+
+    sendMutation.mutate({ conversationId: selectedConversationId, content });
   }
 
   return (
@@ -320,7 +324,6 @@ const styles = StyleSheet.create({
     paddingVertical: spacing.sm,
   },
   retryText: { color: colors.primary, fontWeight: "800" },
-  messagesContent: { padding: spacing.md, gap: spacing.sm },
   messageLoading: { marginBottom: spacing.sm },
   sendError: {
     flexDirection: "row",
