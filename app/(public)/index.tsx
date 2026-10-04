@@ -13,6 +13,7 @@ export default function WelcomeScreen() {
       <Link href="/(public)/login" style={styles.primaryButton}>
         <Text style={styles.primaryButtonText}>Get started</Text>
       </Link>
+      <Link href="/(public)/register" style={styles.registerLink}><Text style={styles.registerText}>Create a patient account</Text></Link>
       <Text style={styles.disclaimer}>
         Health information is educational and does not replace professional medical advice.
       </Text>
@@ -27,5 +28,7 @@ const styles = StyleSheet.create({
   subtitle:{color:colors.textSecondary,fontSize:typography.body,lineHeight:24,marginBottom:spacing.xl},
   primaryButton:{alignSelf:"stretch",backgroundColor:colors.primary,borderRadius:14,paddingVertical:spacing.md,alignItems:"center"},
   primaryButtonText:{color:"#FFFFFF",fontSize:typography.body,fontWeight:"700"},
+  registerLink:{marginTop: spacing.md},
+  registerText:{color:colors.primary,fontWeight:"700",textAlign:"center"},
   disclaimer:{marginTop:spacing.lg,color:colors.textMuted,fontSize:12,lineHeight:18}
 });
