@@ -74,7 +74,7 @@ export default function ConsultationVideoScreen() {
           } else if (message.type === "offer") {
             const pc = peerRef.current ?? createPeer();
             await pc.setRemoteDescription(new RTCSessionDescription(message.sdp));
-            const answer = await pc.createAnswer({ offerToReceiveAudio: true, offerToReceiveVideo: true });
+            const answer = await pc.createAnswer();
             await pc.setLocalDescription(answer);
             send({ type: "answer", sdp: { type: "answer", sdp: answer.sdp ?? "" } });
           } else if (message.type === "answer" && peerRef.current) {
