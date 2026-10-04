@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   ActivityIndicator,
   Pressable,
@@ -22,19 +22,13 @@ export default function PrescriptionDetailScreen() {
   const params = useLocalSearchParams<{ id: string }>();
   const id = Array.isArray(params.id) ? params.id[0] : params.id;
   const queryClient = useQueryClient();
-  const [ocrText, setOcrText] = useState("");
+  const [editedOcrText, setEditedOcrText] = useState<string | null>(null);
 
   const prescriptionQuery = useQuery({
     queryKey: ["prescriptions", id],
     queryFn: () => getPrescription(id),
     enabled: Boolean(id),
   });
-
-  useEffect(() => {
-    if (prescriptionQuery.data) {
-      setOcrText(prescriptionQuery.data.ocr_text ?? "");
-    }
-  }, [prescriptionQuery.data]);
 
   const reviewMutation = useMutation({
     mutationFn: () => reviewPrescriptionOcr(id, { ocr_text: ocrText }),
@@ -71,6 +65,7 @@ export default function PrescriptionDetailScreen() {
   }
 
   const prescription = prescriptionQuery.data;
+  const ocrText = editedOcrText ?? prescription.ocr_text ?? "";
   const error = reviewMutation.error ?? explanationMutation.error;
   const isReviewRequired = prescription.ocr_status === "review_required";
   const isReviewed = prescription.ocr_status === "reviewed";
@@ -96,7 +91,7 @@ export default function PrescriptionDetailScreen() {
       <Text style={styles.sectionTitle}>OCR text</Text>
       <TextInput
         value={ocrText}
-        onChangeText={setOcrText}
+        onChangeText={setEditedOcrText}
         multiline
         editable={isReviewRequired || isReviewed}
         placeholder="OCR text will appear here when available."
