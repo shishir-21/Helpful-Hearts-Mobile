@@ -63,7 +63,7 @@
 > Mobile video/audio uses react-native-webrtc, so Expo Go is not sufficient. A native development/preview/production build is required. WebRTC currently returns a public STUN server; production deployments should add a TURN service for reliable connectivity across restrictive networks.
 
 ## Phase 7 — Production hardening
-- [ ] Push notifications (pending backend notification-token/delivery API)
+- [x] Push notifications (Expo token registration and backend device delivery contract)
 - [x] Analytics privacy abstraction
 - [x] Crash/error monitoring boundary
 - [x] E2E smoke-test foundation
@@ -75,4 +75,4 @@ Every phase must remain runnable and tested before the next feature is merged.
 
 Phase 5 exit note: mobile typecheck, lint, and unit tests must pass before merging. Runtime prescription upload/explanation verification requires the backend APIs and configured AI provider to be available.
 
-Phase 7 note: telemetry is provider-neutral and disabled by default. Healthcare and personal data are excluded from telemetry. Push delivery and store release remain blocked on backend/release infrastructure contracts.
+Phase 7 note: telemetry is provider-neutral and disabled by default. Healthcare and personal data are excluded from telemetry. Push delivery uses Expo Push Service; production delivery still requires EAS push credentials and store release infrastructure. Store release remains blocked on release credentials, signing, and store accounts.
