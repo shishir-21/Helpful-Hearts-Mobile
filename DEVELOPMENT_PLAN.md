@@ -50,13 +50,17 @@
 - [x] OCR review
 - [x] Prescription explanation
 
-> Note: The mobile prescription workflow integrates with the authenticated backend prescription APIs. OCR is intentionally review-first because the backend currently stores uploaded documents with `review_required` status rather than fabricating OCR output.
-
 ## Phase 6 — Consultation
 - [x] Waiting room foundation
-- [ ] Video/audio (pending backend consultation session API)
-- [ ] Consultation chat (pending backend consultation chat API)
-- [x] Appointment-backed consultation history
+- [x] Server-backed consultation session API integration
+- [x] Two-party WebRTC video/audio signaling and native media UI
+- [x] Live consultation chat with persisted WebSocket messages
+- [x] Full server-backed consultation history
+- [x] Session lifecycle and participant authorization
+
+> Phase 6 backend contract: consultation sessions are tied to confirmed appointments. Patients and linked doctor accounts are authorized participants. WebRTC signaling is authenticated and transient; chat messages are persisted as consultation records.
+>
+> Mobile video/audio uses react-native-webrtc, so Expo Go is not sufficient. A native development/preview/production build is required. WebRTC currently returns a public STUN server; production deployments should add a TURN service for reliable connectivity across restrictive networks.
 
 ## Phase 7 — Production hardening
 - [ ] Push notifications (pending backend notification-token/delivery API)
@@ -70,7 +74,5 @@
 Every phase must remain runnable and tested before the next feature is merged.
 
 Phase 5 exit note: mobile typecheck, lint, and unit tests must pass before merging. Runtime prescription upload/explanation verification requires the backend APIs and configured AI provider to be available.
-
-Phase 6 note: the mobile waiting-room and appointment-backed history are implemented without fabricated sessions. Video/audio, live chat, and server-backed consultation records remain pending until the backend exposes consultation contracts.
 
 Phase 7 note: telemetry is provider-neutral and disabled by default. Healthcare and personal data are excluded from telemetry. Push delivery and store release remain blocked on backend/release infrastructure contracts.
