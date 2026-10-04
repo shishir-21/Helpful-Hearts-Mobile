@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { colors, spacing } from "@/theme";
+import { reportError } from "@/lib/telemetry";
 
 type Props = { children: React.ReactNode };
 type State = { hasError: boolean };
@@ -8,10 +9,12 @@ type State = { hasError: boolean };
 export class AppErrorBoundary extends React.Component<Props, State> {
   override state: State = { hasError: false };
 
-  static getDerivedStateFromError(): State { return { hasError: true }; }
+  static getDerivedStateFromError(): State {
+    return { hasError: true };
+  }
 
   override componentDidCatch(error: Error) {
-    if (__DEV__) console.error("Helpful-Hearts application error:", error);
+    reportError(error, { source: "root_error_boundary" });
   }
 
   override render() {
@@ -25,11 +28,27 @@ export class AppErrorBoundary extends React.Component<Props, State> {
         </View>
       );
     }
+
     return this.props.children;
   }
 }
+
 const styles = StyleSheet.create({
-  container:{flex:1,justifyContent:"center",padding:spacing.xl,backgroundColor:colors.background},
-  title:{color:colors.text,fontSize:24,fontWeight:"800",marginBottom:spacing.sm},
-  message:{color:colors.textSecondary,fontSize:16,lineHeight:24}
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    padding: spacing.xl,
+    backgroundColor: colors.background,
+  },
+  title: {
+    color: colors.text,
+    fontSize: 24,
+    fontWeight: "800",
+    marginBottom: spacing.sm,
+  },
+  message: {
+    color: colors.textSecondary,
+    fontSize: 16,
+    lineHeight: 24,
+  },
 });
