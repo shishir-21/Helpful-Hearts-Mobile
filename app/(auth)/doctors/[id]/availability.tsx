@@ -22,14 +22,14 @@ export default function DoctorAvailabilityScreen() {
         {slots.isError ? <Text style={styles.error}>Availability could not be loaded.</Text> : null}
         {!slots.isError && !slots.data?.length ? <Text style={styles.empty}>No upcoming slots are available.</Text> : null}
         {slots.data?.map((slot) => (
-          <View key={slot.starts_at} style={styles.slot}>
+          <Pressable key={slot.starts_at} style={styles.slot} onPress={() => router.push({ pathname: "/(auth)/doctors/[id]/book", params: { id: id!, startsAt: slot.starts_at } })}>
             <View style={styles.slotText}>
               <Text style={styles.date}>{new Date(slot.starts_at).toLocaleDateString()}</Text>
               <Text style={styles.time}>{new Date(slot.starts_at).toLocaleTimeString([], { hour:"numeric", minute:"2-digit" })}</Text>
               <Text style={styles.zone}>{slot.timezone}</Text>
             </View>
             <Text style={styles.available}>Available</Text>
-          </View>
+          </Pressable>
         ))}
       </ScrollView>
     </View>
