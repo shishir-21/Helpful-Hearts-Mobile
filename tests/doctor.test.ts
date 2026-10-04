@@ -1,20 +1,21 @@
+jest.mock("@/lib/api/client", () => ({
+  apiClient: {
+    get: jest.fn(async (..._args: unknown[]) => ({ data: [] })),
+    patch: jest.fn(async (..._args: unknown[]) => ({
+      data: { id: "appointment-1", status: "confirmed" },
+    })),
+  },
+}));
+
+import { apiClient } from "@/lib/api/client";
 import {
   decideDoctorAppointment,
   getDoctorAppointments,
   updateDoctorAppointmentStatus,
 } from "@/features/doctor/api";
 
-const mockGet = jest.fn(async (..._args: unknown[]) => ({ data: [] }));
-const mockPatch = jest.fn(async (..._args: unknown[]) => ({
-  data: { id: "appointment-1", status: "confirmed" },
-}));
-
-jest.mock("@/lib/api/client", () => ({
-  apiClient: {
-    get: mockGet,
-    patch: mockPatch,
-  },
-}));
+const mockGet = jest.mocked(apiClient.get);
+const mockPatch = jest.mocked(apiClient.patch);
 
 describe("doctor mobile API", () => {
   beforeEach(() => {
