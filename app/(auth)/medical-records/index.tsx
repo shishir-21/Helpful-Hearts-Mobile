@@ -66,7 +66,12 @@ export default function MedicalRecordsScreen() {
         <Pressable onPress={() => setSort("oldest")} style={[styles.filterChip, sort === "oldest" && styles.filterChipActive]}><Text style={[styles.filterText, sort === "oldest" && styles.filterTextActive]}>Oldest first</Text></Pressable>
       </ScrollView>
       <Pressable style={styles.labButton} onPress={() => router.push("/(auth)/medical-records/lab-reports")}><View style={styles.labCopy}><Text style={styles.labTitle}>Lab reports</Text><Text style={styles.labText}>View records categorized as lab reports.</Text></View><Text style={styles.open}>Open →</Text></Pressable>
-      <FlatList\n        data={filteredRecords}\n        keyExtractor={(item) => item.id}\n        refreshing={recordsQuery.isRefetching}\n        onRefresh={() => void recordsQuery.refetch()}\n        contentContainerStyle={filteredRecords.length ? styles.list : styles.emptyList}
+      <FlatList
+        data={filteredRecords}
+        keyExtractor={(item) => item.id}
+        refreshing={recordsQuery.isRefetching}
+        onRefresh={() => void recordsQuery.refetch()}
+        contentContainerStyle={filteredRecords.length ? styles.list : styles.emptyList}
         ListEmptyComponent={<View style={styles.empty}><Text style={styles.emptyTitle}>{records.length === 0 ? "No medical records yet" : "No matching records"}</Text><Text style={styles.muted}>{records.length === 0 ? "Your medical records will appear here when they are available." : "Try a different search, category, or date range."}</Text></View>}
         renderItem={({ item }: { item: MedicalRecord }) => <Pressable style={styles.card} onPress={() => router.push(`/(auth)/medical-records/${item.id}`)}><View style={styles.cardCopy}><Text style={styles.cardTitle} numberOfLines={1}>{item.title}</Text><Text style={styles.meta}>{item.category}</Text><Text style={styles.date}>{new Date(item.created_at).toLocaleDateString()}</Text></View><Text style={styles.open}>Open →</Text></Pressable>}
       />
