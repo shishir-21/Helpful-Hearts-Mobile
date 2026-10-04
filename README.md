@@ -2,6 +2,25 @@
 
 Production-oriented React Native mobile application for Helpful-Hearts.
 
+## Why I Built This App
+
+I built Helpful-Hearts because accessing healthcare can be difficult when people need the right doctor, an appointment, or a simple explanation of their medical information.
+
+The goal is to bring important healthcare workflows into one mobile experience — from discovering doctors and checking availability to booking appointments, managing prescriptions, and getting easy-to-understand health information.
+
+I also wanted to build something that solves a real-world problem rather than being just another demo project. The app focuses on making healthcare information and care access simpler, more organized, and easier to use for patients.
+
+## What the App Does
+
+- Discover and search for doctors
+- View doctor profiles and availability
+- Book and manage appointments
+- Chat with an AI health assistant
+- Upload prescriptions
+- Review and edit prescription OCR text
+- Get an educational explanation of a reviewed prescription
+- Manage healthcare-related workflows from a mobile app
+
 ## Stack
 
 - Expo SDK 57
@@ -20,7 +39,7 @@ Production-oriented React Native mobile application for Helpful-Hearts.
 
 ## Architecture
 
-Feature-first mobile architecture with a thin routing layer, centralized API client, typed configuration, secure authentication storage, and testable domain modules.
+Feature-first mobile architecture with a thin routing layer, centralized API client, secure authentication storage, and testable domain modules.
 
 See:
 - ARCHITECTURE.md
@@ -29,7 +48,7 @@ See:
 
 ## Development
 
-Use Node.js LTS. Install dependencies with:
+Install dependencies and start the application:
 
 ```bash
 npm install
@@ -48,7 +67,7 @@ For iOS:
 npm run ios
 ```
 
-For linting and type checking:
+For linting, type checking, and tests:
 
 ```bash
 npm run lint
@@ -56,7 +75,7 @@ npm run typecheck
 npm test
 ```
 
-## Production builds
+## Production Builds
 
 Production builds use EAS:
 
@@ -64,28 +83,9 @@ Production builds use EAS:
 eas build --platform all --profile production
 ```
 
-The repository includes a manual GitHub Actions CD workflow that validates typecheck/lint/tests before starting an EAS build. It requires the `EXPO_TOKEN` repository secret.
+The repository includes a manual GitHub Actions CD workflow that validates typecheck, lint, and tests before starting an EAS build.
 
-### Android AAB
+## Project Status
 
-The production Android profile explicitly uses the Android App Bundle format:
+The mobile application is being developed phase-by-phase with a focus on clean architecture, real backend integration, reliable testing, and production-oriented implementation.
 
-```bash
-eas build --platform android --profile production
-```
-
-For a repository-controlled build, run the **Android AAB** GitHub Actions workflow manually. It validates the project first, starts the EAS production Android build, and stores the returned EAS build metadata as a workflow artifact. The actual `.aab` artifact is hosted by EAS and can be downloaded from the build URL reported by EAS.
-
-The workflow requires `EXPO_TOKEN`. Android application credentials/signing are managed through EAS and are intentionally not stored in the repository.
-
-For store submission, configure the EAS account, Android application credentials/signing, Apple Developer credentials, App Store Connect application ID, and required GitHub/EAS secrets. These credentials are intentionally not stored in the repository.
-
-The current project is release-ready from a code/configuration perspective, but it cannot be published to Google Play or the App Store until those external credentials and store accounts are supplied.
-
-## Environments
-
-Environment-specific public configuration is provided through Expo's `EXPO_PUBLIC_*` variables. Secrets must never be bundled into the mobile application.
-
-## Safety
-
-Helpful-Hearts provides health information and care-access tooling. AI features are informational and must not be used as autonomous diagnosis, prescribing, or medication-change advice.
