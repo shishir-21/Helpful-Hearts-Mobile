@@ -19,7 +19,7 @@ export default function RegisterScreen() {
     setServerError("");
     try {
       const result = await registerUser(input);
-      await secureTokenStorage.setTokens(result.access_token, "");
+      await secureTokenStorage.setAccessToken(result.access_token);
       setSession(result.user);
       router.replace("/(auth)/home");
     } catch {
