@@ -4,15 +4,15 @@ import {
   updateDoctorAppointmentStatus,
 } from "@/features/doctor/api";
 
-const getMock = jest.fn(async () => ({ data: [] }));
-const patchMock = jest.fn(async () => ({
+const getMock = jest.fn(async (..._args: unknown[]) => ({ data: [] }));
+const patchMock = jest.fn(async (..._args: unknown[]) => ({
   data: { id: "appointment-1", status: "confirmed" },
 }));
 
 jest.mock("@/lib/api/client", () => ({
   apiClient: {
-    get: (...args: unknown[]) => getMock(...args),
-    patch: (...args: unknown[]) => patchMock(...args),
+    get: getMock,
+    patch: patchMock,
   },
 }));
 
