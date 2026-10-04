@@ -4,29 +4,29 @@ import {
   updateDoctorAppointmentStatus,
 } from "@/features/doctor/api";
 
-const getMock = jest.fn(async (..._args: unknown[]) => ({ data: [] }));
-const patchMock = jest.fn(async (..._args: unknown[]) => ({
+const mockGet = jest.fn(async (..._args: unknown[]) => ({ data: [] }));
+const mockPatch = jest.fn(async (..._args: unknown[]) => ({
   data: { id: "appointment-1", status: "confirmed" },
 }));
 
 jest.mock("@/lib/api/client", () => ({
   apiClient: {
-    get: getMock,
-    patch: patchMock,
+    get: mockGet,
+    patch: mockPatch,
   },
 }));
 
 describe("doctor mobile API", () => {
   beforeEach(() => {
-    getMock.mockClear();
-    patchMock.mockClear();
+    mockGet.mockClear();
+    mockPatch.mockClear();
   });
 
   it("requests pending doctor appointment requests", async () => {
     const result = await getDoctorAppointments({ status: "requested" });
 
     expect(result).toEqual([]);
-    expect(getMock).toHaveBeenCalledWith("/doctor/appointments", {
+    expect(mockGet).toHaveBeenCalledWith("/doctor/appointments", {
       params: { status: "requested", upcoming_only: undefined },
     });
   });
@@ -35,35 +35,35 @@ describe("doctor mobile API", () => {
     const result = await decideDoctorAppointment("appointment-1", "confirmed");
 
     expect(result).toEqual({ id: "appointment-1", status: "confirmed" });
-    expect(patchMock).toHaveBeenCalledWith(
+    expect(mockPatch).toHaveBeenCalledWith(
       "/doctor/appointments/appointment-1/decision",
       { decision: "confirmed" },
     );
   });
 
   it("rejects a requested appointment", async () => {
-    patchMock.mockResolvedValueOnce({
+    mockPatch.mockResolvedValueOnce({
       data: { id: "appointment-1", status: "rejected" },
     });
 
     const result = await decideDoctorAppointment("appointment-1", "rejected");
 
     expect(result).toEqual({ id: "appointment-1", status: "rejected" });
-    expect(patchMock).toHaveBeenCalledWith(
+    expect(mockPatch).toHaveBeenCalledWith(
       "/doctor/appointments/appointment-1/decision",
       { decision: "rejected" },
     );
   });
 
   it("keeps the existing terminal status endpoint contract", async () => {
-    patchMock.mockResolvedValueOnce({
+    mockPatch.mockResolvedValueOnce({
       data: { id: "appointment-1", status: "completed" },
     });
 
     const result = await updateDoctorAppointmentStatus("appointment-1", "completed");
 
     expect(result).toEqual({ id: "appointment-1", status: "completed" });
-    expect(patchMock).toHaveBeenCalledWith(
+    expect(mockPatch).toHaveBeenCalledWith(
       "/doctor/appointments/appointment-1/status",
       { status: "completed" },
     );
