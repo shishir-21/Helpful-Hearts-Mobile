@@ -1,0 +1,15 @@
+{
+  "expo": {
+    "name": "Helpful-Hearts",
+    "slug": "helpful-hearts-mobile",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "scheme": "helpfulhearts",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "plugins": ["expo-router", "expo-secure-store"],
+    "experiments": { "typedRoutes": true },
+    "android": { "package": "com.helpfulhearts.mobile" },
+    "ios": { "bundleIdentifier": "com.helpfulhearts.mobile" }
+  }
+}
