@@ -21,6 +21,14 @@ export default function HomeScreen() {
         <Text style={styles.cardAction}>Browse doctors →</Text>
       </Pressable>
 
+      <Pressable style={styles.appointmentsCard} onPress={() => router.push("/(auth)/appointments")}>
+        <View style={styles.appointmentsText}>
+          <Text style={styles.infoTitle}>My appointments</Text>
+          <Text style={styles.infoText}>View your upcoming and past bookings.</Text>
+        </View>
+        <Text style={styles.appointmentsAction}>View →</Text>
+      </Pressable>
+
       <View style={styles.row}>
         <View style={styles.infoCard}><Text style={styles.infoTitle}>Verified doctors</Text><Text style={styles.infoText}>Profiles are shown only after verification.</Text></View>
         <View style={styles.infoCard}><Text style={styles.infoTitle}>Your privacy</Text><Text style={styles.infoText}>Sensitive data stays behind the secure API.</Text></View>
@@ -47,6 +55,9 @@ const styles = StyleSheet.create({
   infoCard:{flex:1,padding:spacing.md,borderWidth:1,borderColor:colors.border,borderRadius:16,backgroundColor:colors.surface},
   infoTitle:{fontWeight:"800",color:colors.text,fontSize:14},
   infoText:{fontSize:12,color:colors.textSecondary,lineHeight:18,marginTop:6},
+  appointmentsCard:{flexDirection:"row",alignItems:"center",justifyContent:"space-between",marginTop:spacing.md,padding:spacing.md,borderWidth:1,borderColor:colors.border,borderRadius:16,backgroundColor:colors.surface},
+  appointmentsText:{flex:1},
+  appointmentsAction:{color:colors.primary,fontWeight:"800",marginLeft:spacing.sm},
   signOut:{marginTop:"auto",paddingVertical:spacing.md,alignItems:"center"},
   signOutText:{color:colors.textSecondary,fontWeight:"700"}
 });
