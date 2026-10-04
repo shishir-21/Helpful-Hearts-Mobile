@@ -18,12 +18,13 @@
 - [x] ESLint / Prettier / TypeScript
 - [x] Unit-test foundation
 - [x] CI workflow
+- [x] CD workflow (manual EAS build)
 
 ## Phase 2 — Authentication
-- [ ] Login
-- [ ] Registration
-- [ ] Refresh session
-- [ ] Logout
+- [x] Login
+- [x] Registration
+- [x] Session bootstrap
+- [x] Logout
 - [ ] Forgot/reset password
 - [ ] Patient profile
 
