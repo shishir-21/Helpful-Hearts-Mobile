@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import {
   ActivityIndicator,
   FlatList,
@@ -34,16 +34,15 @@ export default function AssistantScreen() {
     queryFn: getConversations,
   });
 
-  useEffect(() => {
-    if (!selectedConversationId && conversationsQuery.data?.[0]) {
-      setSelectedConversationId(conversationsQuery.data[0].id);
-    }
-  }, [conversationsQuery.data, selectedConversationId]);
+
+
+  const activeConversationId =
+    selectedConversationId ?? conversationsQuery.data?.[0]?.id;
 
   const messagesQuery = useQuery({
-    queryKey: ["assistant", "messages", selectedConversationId],
-    queryFn: () => getConversationMessages(selectedConversationId!),
-    enabled: Boolean(selectedConversationId),
+    queryKey: ["assistant", "messages", activeConversationId],
+    queryFn: () => getConversationMessages(activeConversationId!),
+    enabled: Boolean(activeConversationId),
   });
 
   const createMutation = useMutation({
@@ -78,7 +77,7 @@ export default function AssistantScreen() {
     const content = draft.trim();
     if (!content) return;
 
-    if (!selectedConversationId) {
+    if (!activeConversationId) {
       createMutation.mutate(undefined, {
         onSuccess: (conversation) => {
           setSelectedConversationId(conversation.id);
@@ -88,7 +87,7 @@ export default function AssistantScreen() {
       return;
     }
 
-    sendMutation.mutate({ conversationId: selectedConversationId, content });
+    sendMutation.mutate({ conversationId: activeConversationId, content });
   }
 
   return (
@@ -150,14 +149,14 @@ export default function AssistantScreen() {
                 onPress={() => setSelectedConversationId(item.id)}
                 style={[
                   styles.historyItem,
-                  item.id === selectedConversationId && styles.historyItemActive,
+                  item.id === activeConversationId && styles.historyItemActive,
                 ]}
               >
                 <Text
                   numberOfLines={1}
                   style={[
                     styles.historyText,
-                    item.id === selectedConversationId && styles.historyTextActive,
+                    item.id === activeConversationId && styles.historyTextActive,
                   ]}
                 >
                   {item.title?.trim() || "Conversation"}
