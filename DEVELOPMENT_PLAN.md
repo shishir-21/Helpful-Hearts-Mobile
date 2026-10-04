@@ -29,15 +29,15 @@
 - [ ] Patient profile
 
 ## Phase 3 — Patient experience
-- [ ] Home dashboard
-- [ ] Doctor discovery
+- [x] Home dashboard
+- [x] Doctor discovery
 - [x] Doctor profile
 - [x] Doctor availability
 
 ## Phase 4 — Appointments
-- [ ] Slot selection
-- [ ] Booking
-- [ ] My appointments
+- [x] Slot selection
+- [x] Booking
+- [x] My appointments
 - [ ] Cancellation
 - [ ] Rescheduling
 - [ ] Appointment reminders
@@ -50,7 +50,7 @@
 - [x] OCR review
 - [x] Prescription explanation
 
- > Note: The mobile prescription workflow integrates with the authenticated backend prescription APIs. OCR is intentionally review-first because the backend currently stores uploaded documents with `review_required` status rather than fabricating OCR output.
+> Note: The mobile prescription workflow integrates with the authenticated backend prescription APIs. OCR is intentionally review-first because the backend currently stores uploaded documents with `review_required` status rather than fabricating OCR output.
 
 ## Phase 6 — Consultation
 - [x] Waiting room foundation
@@ -59,16 +59,18 @@
 - [x] Appointment-backed consultation history
 
 ## Phase 7 — Production hardening
-- [ ] Push notifications
-- [ ] Analytics
-- [ ] Crash/error monitoring
-- [ ] E2E tests
-- [ ] Performance tests
-- [ ] EAS production builds
-- [ ] Store release
+- [ ] Push notifications (pending backend notification-token/delivery API)
+- [x] Analytics privacy abstraction
+- [x] Crash/error monitoring boundary
+- [x] E2E smoke-test foundation
+- [x] Performance instrumentation foundation
+- [x] EAS production profile/documentation
+- [ ] Store release (pending release credentials, signing, and store accounts)
 
 Every phase must remain runnable and tested before the next feature is merged.
 
 Phase 5 exit note: mobile typecheck, lint, and unit tests must pass before merging. Runtime prescription upload/explanation verification requires the backend APIs and configured AI provider to be available.
 
 Phase 6 note: the mobile waiting-room and appointment-backed history are implemented without fabricated sessions. Video/audio, live chat, and server-backed consultation records remain pending until the backend exposes consultation contracts.
+
+Phase 7 note: telemetry is provider-neutral and disabled by default. Healthcare and personal data are excluded from telemetry. Push delivery and store release remain blocked on backend/release infrastructure contracts.

@@ -1,0 +1,5 @@
+appId: com.helpfulhearts.mobile
+---
+- launchApp:
+    clearState: true
+- waitForAnimationToEnd
