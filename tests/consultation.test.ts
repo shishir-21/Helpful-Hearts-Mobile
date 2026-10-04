@@ -8,7 +8,7 @@ const appointment: Appointment = {
   created_at:"2026-10-01T00:00:00Z",
 };
 
-describe("consultation contracts",()=>{
+describe("consultation contracts",()=>{\n  // Phase 6 transport is split into independent video and chat channels.
   it("validates the session contract",()=>{
     expect(consultationSessionSchema.parse({
       id:"s1", appointment_id:"a1", status:"scheduled", media_provider:"webrtc",
