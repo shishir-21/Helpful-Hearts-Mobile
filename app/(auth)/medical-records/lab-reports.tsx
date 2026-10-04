@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ActivityIndicator, FlatList, Pressable, StyleSheet, Text, View } from "react-native";
+import { ActivityIndicator, FlatList, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 import { router } from "expo-router";
 import { useQuery } from "@tanstack/react-query";
 import { colors, spacing, typography } from "@/theme";
@@ -7,6 +7,7 @@ import { normalizeApiError } from "@/lib/api/apiError";
 import { getMedicalRecords } from "@/features/medical-records/api";
 import type { MedicalRecord } from "@/features/medical-records/types";
 import { sortLabReports, type LabReportSort } from "@/features/medical-records/labReportSort";
+import { searchLabReports } from "@/features/medical-records/labReportSearch";
 
 function isLabReport(record: MedicalRecord) {
   return record.category.trim().toLowerCase() === "lab";
@@ -14,6 +15,7 @@ function isLabReport(record: MedicalRecord) {
 
 export default function LabReportsScreen() {
   const [sort, setSort] = useState<LabReportSort>("newest");
+  const [query, setQuery] = useState("");
   const recordsQuery = useQuery({
     queryKey: ["medical-records"],
     queryFn: getMedicalRecords,
@@ -33,7 +35,8 @@ export default function LabReportsScreen() {
     );
   }
 
-  const reports = sortLabReports((recordsQuery.data ?? []).filter(isLabReport), sort);
+  const labReports = (recordsQuery.data ?? []).filter(isLabReport);
+  const reports = sortLabReports(searchLabReports(labReports, query), sort);
 
   return (
     <View style={styles.container}>
@@ -41,6 +44,15 @@ export default function LabReportsScreen() {
       <Text style={styles.eyebrow}>MY HEALTH</Text>
       <Text style={styles.title}>Lab reports</Text>
       <Text style={styles.subtitle}>Lab reports available in your medical records.</Text>
+
+      <TextInput
+        value={query}
+        onChangeText={setQuery}
+        placeholder="Search lab reports"
+        placeholderTextColor={colors.textMuted}
+        accessibilityLabel="Search lab reports"
+        style={styles.search}
+      />
 
       <View style={styles.sortRow}>
         <Text style={styles.sortLabel}>Sort</Text>
@@ -66,7 +78,14 @@ export default function LabReportsScreen() {
         data={reports}
         keyExtractor={(item) => item.id}
         contentContainerStyle={reports.length ? styles.list : styles.emptyList}
-        ListEmptyComponent={<View style={styles.empty}><Text style={styles.emptyTitle}>No lab reports yet</Text><Text style={styles.muted}>Lab records will appear here when your healthcare data includes a Lab category.</Text></View>}
+        ListEmptyComponent={
+          <View style={styles.empty}>
+            <Text style={styles.emptyTitle}>{query.trim() ? "No matching lab reports" : "No lab reports yet"}</Text>
+            <Text style={styles.muted}>
+              {query.trim() ? "Try a different report title." : "Lab records will appear here when your healthcare data includes a Lab category."}
+            </Text>
+          </View>
+        }
         renderItem={({ item }) => (
           <Pressable style={styles.card} onPress={() => router.push(`/(auth)/medical-records/${item.id}`)}>
             <View style={styles.copy}>
@@ -87,6 +106,7 @@ const styles = StyleSheet.create({
   eyebrow:{color:colors.primary,fontSize:11,fontWeight:"800",letterSpacing:1},
   title:{color:colors.text,fontSize:typography.title,fontWeight:"800",marginTop:spacing.sm},
   subtitle:{color:colors.textSecondary,fontSize:14,lineHeight:21,marginTop:spacing.sm,marginBottom:spacing.md},
+  search:{borderWidth:1,borderColor:colors.border,borderRadius:12,backgroundColor:colors.surface,color:colors.text,paddingHorizontal:spacing.md,paddingVertical:spacing.sm,marginBottom:spacing.md},
   sortRow:{flexDirection:"row",alignItems:"center",gap:spacing.xs,marginBottom:spacing.md},
   sortLabel:{color:colors.textSecondary,fontSize:13,fontWeight:"700",marginRight:spacing.xs},
   sortChip:{paddingHorizontal:spacing.md,paddingVertical:spacing.xs,borderRadius:999,borderWidth:1,borderColor:colors.border,backgroundColor:colors.surface},
