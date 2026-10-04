@@ -48,6 +48,7 @@ export default function AppointmentDetailsScreen() {
         <Text style={styles.label}>Booking reference</Text>
         <Text style={styles.value}>{item.booking_reference}</Text>
         {item.reason ? <><Text style={styles.label}>Reason</Text><Text style={styles.value}>{item.reason}</Text></> : null}
+        {item.status === "confirmed" ? <Pressable style={styles.consultationButton} onPress={() => router.push(`/(auth)/consultation/appointment?appointmentId=${item.id}`)}><Text style={styles.consultationButtonText}>Open waiting room</Text></Pressable> : null}
       </View>
     </ScrollView>
   );
@@ -64,4 +65,6 @@ const styles = StyleSheet.create({
   value:{fontSize:16,color:colors.text,lineHeight:24,marginTop:4},
   status:{fontSize:18,fontWeight:"800",color:colors.success,textTransform:"capitalize",marginTop:4},
   error:{color:colors.danger,fontSize:16,textAlign:"center",marginBottom:spacing.md},
+  consultationButton:{marginTop:spacing.lg,backgroundColor:colors.primary,borderRadius:12,padding:spacing.md,alignItems:"center"},
+  consultationButtonText:{color:"#fff",fontWeight:"800"},
 });
