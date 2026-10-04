@@ -9,6 +9,7 @@ import type { MedicalRecord } from "@/features/medical-records/types";
 import { sortLabReports, type LabReportSort } from "@/features/medical-records/labReportSort";
 import { searchLabReports } from "@/features/medical-records/labReportSearch";
 import { filterLabReportsByDate, type LabReportDateFilter } from "@/features/medical-records/labReportDateFilter";
+import { hasActiveLabReportFilters } from "@/features/medical-records/labReportFilters";
 
 function isLabReport(record: MedicalRecord) {
   return record.category.trim().toLowerCase() === "lab";
@@ -39,12 +40,28 @@ export default function LabReportsScreen() {
     filterLabReportsByDate(searchLabReports(labReports, query), dateFilter),
     sort,
   );
+  const hasActiveFilters = hasActiveLabReportFilters(query, dateFilter, sort);
+
+  const clearFilters = () => {
+    setQuery("");
+    setDateFilter("all");
+    setSort("newest");
+  };
 
   return (
     <View style={styles.container}>
       <Pressable onPress={() => router.back()}><Text style={styles.back}>‹ Back</Text></Pressable>
-      <Text style={styles.eyebrow}>MY HEALTH</Text>
-      <Text style={styles.title}>Lab reports</Text>
+      <View style={styles.headerRow}>
+        <View style={styles.headerCopy}>
+          <Text style={styles.eyebrow}>MY HEALTH</Text>
+          <Text style={styles.title}>Lab reports</Text>
+        </View>
+        {hasActiveFilters ? (
+          <Pressable accessibilityRole="button" onPress={clearFilters} style={styles.clearButton}>
+            <Text style={styles.clearText}>Clear filters</Text>
+          </Pressable>
+        ) : null}
+      </View>
       <Text style={styles.subtitle}>Lab reports available in your medical records.</Text>
 
       <TextInput value={query} onChangeText={setQuery} placeholder="Search lab reports" placeholderTextColor={colors.textMuted} accessibilityLabel="Search lab reports" style={styles.search} />
@@ -52,13 +69,7 @@ export default function LabReportsScreen() {
       <View style={styles.filterRow}>
         <Text style={styles.filterLabel}>Date</Text>
         {(["all", "7d", "30d"] as const).map((filter) => (
-          <Pressable
-            key={filter}
-            accessibilityRole="button"
-            accessibilityState={{ selected: dateFilter === filter }}
-            onPress={() => setDateFilter(filter)}
-            style={[styles.filterChip, dateFilter === filter && styles.filterChipActive]}
-          >
+          <Pressable key={filter} accessibilityRole="button" accessibilityState={{ selected: dateFilter === filter }} onPress={() => setDateFilter(filter)} style={[styles.filterChip, dateFilter === filter && styles.filterChipActive]}>
             <Text style={[styles.filterText, dateFilter === filter && styles.filterTextActive]}>
               {filter === "all" ? "All time" : filter === "7d" ? "Last 7 days" : "Last 30 days"}
             </Text>
@@ -109,6 +120,10 @@ export default function LabReportsScreen() {
 const styles = StyleSheet.create({
   container:{flex:1,backgroundColor:colors.background,padding:spacing.lg},
   back:{color:colors.primary,fontWeight:"800",marginBottom:spacing.lg},
+  headerRow:{flexDirection:"row",alignItems:"flex-start",justifyContent:"space-between",gap:spacing.sm},
+  headerCopy:{flex:1},
+  clearButton:{paddingHorizontal:spacing.sm,paddingVertical:spacing.xs,borderRadius:10,borderWidth:1,borderColor:colors.border,backgroundColor:colors.surface},
+  clearText:{color:colors.primary,fontSize:12,fontWeight:"800"},
   eyebrow:{color:colors.primary,fontSize:11,fontWeight:"800",letterSpacing:1},
   title:{color:colors.text,fontSize:typography.title,fontWeight:"800",marginTop:spacing.sm},
   subtitle:{color:colors.textSecondary,fontSize:14,lineHeight:21,marginTop:spacing.sm,marginBottom:spacing.md},
