@@ -53,10 +53,10 @@
  > Note: The mobile prescription workflow integrates with the authenticated backend prescription APIs. OCR is intentionally review-first because the backend currently stores uploaded documents with `review_required` status rather than fabricating OCR output.
 
 ## Phase 6 — Consultation
-- [ ] Waiting room
-- [ ] Video/audio
-- [ ] Consultation chat
-- [ ] Consultation history
+- [x] Waiting room foundation
+- [ ] Video/audio (pending backend consultation session API)
+- [ ] Consultation chat (pending backend consultation chat API)
+- [x] Appointment-backed consultation history
 
 ## Phase 7 — Production hardening
 - [ ] Push notifications
@@ -70,3 +70,5 @@
 Every phase must remain runnable and tested before the next feature is merged.
 
 Phase 5 exit note: mobile typecheck, lint, and unit tests must pass before merging. Runtime prescription upload/explanation verification requires the backend APIs and configured AI provider to be available.
+
+Phase 6 note: the mobile waiting-room and appointment-backed history are implemented without fabricated sessions. Video/audio, live chat, and server-backed consultation records remain pending until the backend exposes consultation contracts.
