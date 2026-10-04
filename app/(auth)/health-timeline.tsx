@@ -1,15 +1,17 @@
 import { useState } from "react";
-import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
 import { router } from "expo-router";
 import { useQuery } from "@tanstack/react-query";
 import { getHealthTimeline } from "@/features/health-timeline/api";
 import { filterHealthTimeline, type HealthTimelineFilter } from "@/features/health-timeline/filter";
 import { filterHealthTimelineByDate, type HealthTimelineDateFilter } from "@/features/health-timeline/dateFilter";
+import { searchHealthTimeline } from "@/features/health-timeline/search";
 import { colors, spacing, typography } from "@/theme";
 
 export default function HealthTimelineScreen() {
   const [filter, setFilter] = useState<HealthTimelineFilter>("all");
   const [dateFilter, setDateFilter] = useState<HealthTimelineDateFilter>("all");
+  const [queryText, setQueryText] = useState("");
   const query = useQuery({ queryKey: ["health-timeline"], queryFn: getHealthTimeline });
 
   if (query.isLoading) return <View style={styles.center}><ActivityIndicator /><Text style={styles.muted}>Loading your health timeline…</Text></View>;
@@ -17,7 +19,8 @@ export default function HealthTimelineScreen() {
 
   const items = query.data ?? [];
   const typeFilteredItems = filterHealthTimeline(items, filter);
-  const filteredItems = filterHealthTimelineByDate(typeFilteredItems, dateFilter);
+  const dateFilteredItems = filterHealthTimelineByDate(typeFilteredItems, dateFilter);
+  const filteredItems = searchHealthTimeline(dateFilteredItems, queryText);
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
@@ -28,6 +31,14 @@ export default function HealthTimelineScreen() {
 
       {items.length > 0 && (
         <>
+          <TextInput
+            value={queryText}
+            onChangeText={setQueryText}
+            placeholder="Search timeline"
+            placeholderTextColor={colors.textMuted}
+            accessibilityLabel="Search health timeline"
+            style={styles.search}
+          />
           <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.filters}>
             {([
               ["all", "All"],
@@ -55,7 +66,7 @@ export default function HealthTimelineScreen() {
       )}
 
       {filteredItems.length === 0 ? (
-        <View style={styles.empty}><Text style={styles.emptyTitle}>{items.length === 0 ? "No health activity yet" : "No matching activity"}</Text><Text style={styles.muted}>{items.length === 0 ? "Your appointments, prescriptions, and medical records will appear here." : "Try another event type or date range."}</Text></View>
+        <View style={styles.empty}><Text style={styles.emptyTitle}>{items.length === 0 ? "No health activity yet" : "No matching activity"}</Text><Text style={styles.muted}>{items.length === 0 ? "Your appointments, prescriptions, and medical records will appear here." : "Try a different search, event type, or date range."}</Text></View>
       ) : (
         <View style={styles.timeline}>
           {filteredItems.map((item) => (
@@ -83,6 +94,7 @@ const styles = StyleSheet.create({
   container:{flex:1,backgroundColor:colors.background},content:{padding:spacing.lg,paddingBottom:spacing.xl},
   back:{color:colors.primary,fontWeight:"800",marginBottom:spacing.lg},eyebrow:{color:colors.primary,fontSize:11,fontWeight:"800",letterSpacing:1},
   title:{color:colors.text,fontSize:typography.title,fontWeight:"800",marginTop:spacing.sm},subtitle:{color:colors.textSecondary,fontSize:14,lineHeight:21,marginTop:spacing.sm,marginBottom:spacing.md},
+  search:{borderWidth:1,borderColor:colors.border,borderRadius:12,backgroundColor:colors.surface,color:colors.text,paddingHorizontal:spacing.md,paddingVertical:spacing.sm,marginBottom:spacing.md},
   filters:{gap:spacing.sm,paddingBottom:spacing.md},filterChip:{paddingHorizontal:spacing.md,paddingVertical:spacing.sm,borderRadius:999,borderWidth:1,borderColor:colors.border,backgroundColor:colors.surface},
   filterChipActive:{backgroundColor:colors.primary,borderColor:colors.primary},filterText:{color:colors.textSecondary,fontSize:12,fontWeight:"700"},filterTextActive:{color:"#fff"},
   timeline:{gap:spacing.md},item:{flexDirection:"row",gap:spacing.md,paddingBottom:spacing.sm},dot:{width:12,height:12,borderRadius:6,backgroundColor:colors.primary,marginTop:5},
