@@ -3,9 +3,12 @@ import { router } from "expo-router";
 import { colors, spacing, typography } from "@/theme";
 import { useAuthStore } from "@/stores/authStore";
 import { signOut } from "@/features/auth/signOut";
+import DoctorHomeScreen from "./doctor/index";
 
 export default function HomeScreen() {
   const user = useAuthStore((state) => state.user);
+  if (user?.role === "doctor") return <DoctorHomeScreen />;
+
   const firstName = user?.full_name?.split(" ")[0] ?? "there";
 
   return (
