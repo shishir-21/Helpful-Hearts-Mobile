@@ -29,6 +29,14 @@ export default function HomeScreen() {
         <Text style={styles.appointmentsAction}>Ask →</Text>
       </Pressable>
 
+      <Pressable style={styles.prescriptionsCard} onPress={() => router.push("/(auth)/prescriptions")}>
+        <View style={styles.appointmentsText}>
+          <Text style={styles.infoTitle}>My prescriptions</Text>
+          <Text style={styles.infoText}>Upload, review OCR, and request an educational explanation.</Text>
+        </View>
+        <Text style={styles.appointmentsAction}>Open →</Text>
+      </Pressable>
+
       <Pressable style={styles.appointmentsCard} onPress={() => router.push("/(auth)/appointments")}>
         <View style={styles.appointmentsText}>
           <Text style={styles.infoTitle}>My appointments</Text>
@@ -65,6 +73,7 @@ const styles = StyleSheet.create({
   infoText:{fontSize:12,color:colors.textSecondary,lineHeight:18,marginTop:6},
   assistantCard:{flexDirection:"row",alignItems:"center",justifyContent:"space-between",marginTop:spacing.md,padding:spacing.md,borderWidth:1,borderColor:"#F4CACA",borderRadius:16,backgroundColor:colors.primarySoft},
   appointmentsCard:{flexDirection:"row",alignItems:"center",justifyContent:"space-between",marginTop:spacing.md,padding:spacing.md,borderWidth:1,borderColor:colors.border,borderRadius:16,backgroundColor:colors.surface},
+  prescriptionsCard:{flexDirection:"row",alignItems:"center",justifyContent:"space-between",marginTop:spacing.md,padding:spacing.md,borderWidth:1,borderColor:colors.border,borderRadius:16,backgroundColor:colors.surface},
   appointmentsText:{flex:1},
   appointmentsAction:{color:colors.primary,fontWeight:"800",marginLeft:spacing.sm},
   signOut:{marginTop:"auto",paddingVertical:spacing.md,alignItems:"center"},
