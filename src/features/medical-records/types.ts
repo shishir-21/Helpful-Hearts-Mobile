@@ -28,5 +28,5 @@ export function getMedicalRecordCategoryLabel(category: string): string {
   const known = MEDICAL_RECORD_CATEGORY_LABELS.find(
     (value) => value.toLowerCase() === normalized,
   );
-  return known ?? category.trim() || "Medical record";
+  return known ?? (category.trim() || "Medical record");
 }
