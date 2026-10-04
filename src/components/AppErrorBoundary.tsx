@@ -6,15 +6,15 @@ type Props = { children: React.ReactNode };
 type State = { hasError: boolean };
 
 export class AppErrorBoundary extends React.Component<Props, State> {
-  state: State = { hasError: false };
+  override state: State = { hasError: false };
 
   static getDerivedStateFromError(): State { return { hasError: true }; }
 
-  componentDidCatch(error: Error) {
+  override componentDidCatch(error: Error) {
     if (__DEV__) console.error("Helpful-Hearts application error:", error);
   }
 
-  render() {
+  override render() {
     if (this.state.hasError) {
       return (
         <View style={styles.container}>
