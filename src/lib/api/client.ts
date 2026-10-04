@@ -1,8 +1,8 @@
-import axios from "axios";
+import axios, { type AxiosInstance } from "axios";
 import { env } from "@/config/env";
 import { secureTokenStorage } from "@/lib/auth/secureStorage";
 
-export const apiClient = axios.create({
+export const apiClient: AxiosInstance = axios.create({
   baseURL: env.EXPO_PUBLIC_API_URL,
   timeout: 15_000,
   headers: { Accept: "application/json", "Content-Type": "application/json" },
