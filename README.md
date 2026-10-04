@@ -15,6 +15,8 @@ Production-oriented React Native mobile application for Helpful-Hearts.
 - Zod
 - React Hook Form
 - Expo SecureStore
+- Expo Notifications
+- react-native-webrtc
 
 ## Architecture
 
@@ -36,18 +38,37 @@ npm start
 
 For Android:
 
-```npm run android```
+```bash
+npm run android
+```
 
 For iOS:
 
-```npm run ios```
+```bash
+npm run ios
+```
 
 For linting and type checking:
 
 ```bash
 npm run lint
 npm run typecheck
+npm test
 ```
+
+## Production builds
+
+Production builds use EAS:
+
+```bash
+eas build --platform all --profile production
+```
+
+The repository includes a manual GitHub Actions CD workflow that validates typecheck/lint/tests before starting an EAS build. It requires the `EXPO_TOKEN` repository secret.
+
+For store submission, configure the EAS account, Android application credentials/signing, Apple Developer credentials, App Store Connect application ID, and required GitHub/EAS secrets. These credentials are intentionally not stored in the repository.
+
+The current project is release-ready from a code/configuration perspective, but it cannot be published to Google Play or the App Store until those external credentials and store accounts are supplied.
 
 ## Environments
 
