@@ -26,7 +26,7 @@
 - [x] Session bootstrap
 - [x] Logout
 - [ ] Forgot/reset password
-- [ ] Patient profile
+- [x] Patient profile
 
 ## Phase 3 — Patient experience
 - [x] Home dashboard
