@@ -53,8 +53,8 @@ export default function ConsultationVideoScreen() {
           const pc = new RTCPeerConnection({ iceServers: query.data.ice_servers });
           peerRef.current = pc;
           stream.getTracks().forEach((track) => pc.addTrack(track, stream));
-          pc.ontrack = (event) => { const remote = event.streams?.[0]; if (remote) setRemoteStream(remote); };
-          pc.onicecandidate = (event) => { if (event.candidate) send({ type: "candidate", candidate: event.candidate }); };
+          pc.ontrack = (event: { streams?: MediaStream[] }) => { const remote = event.streams?.[0]; if (remote) setRemoteStream(remote); };
+          pc.onicecandidate = (event: { candidate: RTCIceCandidate | null }) => { if (event.candidate) send({ type: "candidate", candidate: event.candidate }); };
           pc.onconnectionstatechange = () => { setConnected(pc.connectionState === "connected"); if (pc.connectionState === "failed") setError("The video connection failed. Please leave and rejoin."); };
           return pc;
         };
