@@ -58,21 +58,18 @@
 - [x] Full server-backed consultation history
 - [x] Session lifecycle and participant authorization
 
-> Phase 6 backend contract: consultation sessions are tied to confirmed appointments. Patients and linked doctor accounts are authorized participants. WebRTC signaling is authenticated and transient; chat messages are persisted as consultation records.
->
-> Mobile video/audio uses react-native-webrtc, so Expo Go is not sufficient. A native development/preview/production build is required. WebRTC currently returns a public STUN server; production deployments should add a TURN service for reliable connectivity across restrictive networks.
-
 ## Phase 7 — Production hardening
-- [x] Push notifications (Expo token registration and backend device delivery contract)
+- [x] Push notifications (token registration, authenticated device persistence, delivery contract, and session cleanup)
 - [x] Analytics privacy abstraction
 - [x] Crash/error monitoring boundary
 - [x] E2E smoke-test foundation
 - [x] Performance instrumentation foundation
-- [x] EAS production profile/documentation
-- [ ] Store release (pending release credentials, signing, and store accounts)
+- [x] EAS production build profile and manual CD workflow
+- [x] Release configuration and store-submission checklist
+- [ ] Store publication (blocked on external Apple/Google developer accounts, signing credentials, and release secrets)
+
+> Phase 7 release boundary: all repository-controlled production-hardening work is complete. Store publication cannot be truthfully automated or marked complete without the external credentials and store accounts above.
 
 Every phase must remain runnable and tested before the next feature is merged.
 
-Phase 5 exit note: mobile typecheck, lint, and unit tests must pass before merging. Runtime prescription upload/explanation verification requires the backend APIs and configured AI provider to be available.
-
-Phase 7 note: telemetry is provider-neutral and disabled by default. Healthcare and personal data are excluded from telemetry. Push delivery uses Expo Push Service; production delivery still requires EAS push credentials and store release infrastructure. Store release remains blocked on release credentials, signing, and store accounts.
+Phase 7 note: telemetry is provider-neutral and disabled by default. Healthcare and personal data are excluded from telemetry. Push delivery uses Expo Push Service; production push requires the EAS project and platform credentials. WebRTC production reliability should use a TURN service in addition to STUN.
