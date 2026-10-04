@@ -30,7 +30,8 @@
     "zod": "^4.1.12",
     "zustand": "^5.0.8",
     "expo-document-picker": "~14.0.7",
-    "react-native-webrtc": "124.0.8"
+    "react-native-webrtc": "124.0.8",
+    "expo-notifications": "~0.32.10"
   },
   "devDependencies": {
     "@types/jest": "^29.5.14",
