@@ -1,0 +1,42 @@
+name: Android AAB
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Validate project
+        run: |
+          npm run typecheck
+          npm run lint
+          npm test
+
+      - name: Setup EAS
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Build Android AAB
+        run: eas build --platform android --profile production --non-interactive --json > eas-build.json
+
+      - name: Upload EAS build metadata
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-aab-build-metadata
+          path: eas-build.json
+          if-no-files-found: error
