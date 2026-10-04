@@ -24,7 +24,7 @@
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "react-hook-form": "^7.65.0",
-    "react-native": "0.86.0",
+    "react-native": "0.86.3",
     "react-native-safe-area-context": "~5.6.0",
     "react-native-screens": "~4.16.0",
     "zod": "^4.1.12",
@@ -38,6 +38,6 @@
     "jest": "^29.7.0",
     "prettier": "^3.6.2",
     "typescript": "~5.9.3",
-    "jest-expo": "~57.0.2"
+    "jest-expo": "~57.0.5"
   }
 }
