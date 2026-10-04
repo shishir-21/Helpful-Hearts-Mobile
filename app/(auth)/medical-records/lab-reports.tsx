@@ -6,14 +6,14 @@ import { colors, spacing, typography } from "@/theme";
 import { normalizeApiError } from "@/lib/api/apiError";
 import { getMedicalRecords } from "@/features/medical-records/api";
 import type { MedicalRecord } from "@/features/medical-records/types";
-import { filterLabReportsByCategory, getLabReportCategories } from "@/features/medical-records/labReportFilter";
+import { sortLabReports, type LabReportSort } from "@/features/medical-records/labReportFilter";
 
 function isLabReport(record: MedicalRecord) {
   return record.category.trim().toLowerCase() === "lab";
 }
 
 export default function LabReportsScreen() {
-  const [category, setCategory] = useState("all");
+  const [sort, setSort] = useState<LabReportSort>("newest");
   const recordsQuery = useQuery({ queryKey: ["medical-records"], queryFn: getMedicalRecords });
 
   if (recordsQuery.isLoading) {
@@ -31,8 +31,7 @@ export default function LabReportsScreen() {
   }
 
   const reports = (recordsQuery.data ?? []).filter(isLabReport);
-  const categories = getLabReportCategories(reports);
-  const filteredReports = filterLabReportsByCategory(reports, category);
+  const sortedReports = sortLabReports(reports, sort);
 
   return (
     <View style={styles.container}>
@@ -43,19 +42,22 @@ export default function LabReportsScreen() {
 
       {reports.length > 0 && (
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.filters}>
-          {["all", ...categories].map((value) => (
-            <Pressable key={value} onPress={() => setCategory(value)} style={[styles.filterChip, category === value && styles.filterChipActive]}>
-              <Text style={[styles.filterText, category === value && styles.filterTextActive]}>{value === "all" ? "All" : value}</Text>
+          {([
+            ["newest", "Newest first"],
+            ["oldest", "Oldest first"],
+          ] as const).map(([value, label]) => (
+            <Pressable key={value} onPress={() => setSort(value)} style={[styles.filterChip, sort === value && styles.filterChipActive]}>
+              <Text style={[styles.filterText, sort === value && styles.filterTextActive]}>{label}</Text>
             </Pressable>
           ))}
         </ScrollView>
       )}
 
       <FlatList
-        data={filteredReports}
+        data={sortedReports}
         keyExtractor={(item) => item.id}
-        contentContainerStyle={filteredReports.length ? styles.list : styles.emptyList}
-        ListEmptyComponent={<View style={styles.empty}><Text style={styles.emptyTitle}>{reports.length ? "No matching lab reports" : "No lab reports yet"}</Text><Text style={styles.muted}>{reports.length ? "Try another category." : "Lab records will appear here when your healthcare data includes a Lab category."}</Text></View>}
+        contentContainerStyle={sortedReports.length ? styles.list : styles.emptyList}
+        ListEmptyComponent={<View style={styles.empty}><Text style={styles.emptyTitle}>No lab reports yet</Text><Text style={styles.muted}>Lab records will appear here when your healthcare data includes a Lab category.</Text></View>}
         renderItem={({ item }) => (
           <Pressable style={styles.card} onPress={() => router.push(`/(auth)/medical-records/${item.id}`)}>
             <View style={styles.copy}>
