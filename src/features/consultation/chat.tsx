@@ -39,7 +39,7 @@ export default function ConsultationChatScreen() {
       if (!token || disposed) return;
       const baseUrl = env.EXPO_PUBLIC_API_URL.replace(/^http/, "ws");
       const ws = new WebSocket(
-        `${baseUrl}${sessionQuery.data.signaling_path}?token=${encodeURIComponent(token)}`,
+        `${baseUrl}${sessionQuery.data.signaling_path.replace("/signal", "/chat")}?token=${encodeURIComponent(token)}`,
       );
       socketRef.current = ws;
       ws.onopen = () => setConnected(true);
