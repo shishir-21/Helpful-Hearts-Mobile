@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { ActivityIndicator, FlatList, Pressable, StyleSheet, Text, View } from "react-native";
 import { router } from "expo-router";
 import { useQuery } from "@tanstack/react-query";
@@ -5,12 +6,14 @@ import { colors, spacing, typography } from "@/theme";
 import { normalizeApiError } from "@/lib/api/apiError";
 import { getMedicalRecords } from "@/features/medical-records/api";
 import type { MedicalRecord } from "@/features/medical-records/types";
+import { sortLabReports, type LabReportSort } from "@/features/medical-records/labReportSort";
 
 function isLabReport(record: MedicalRecord) {
   return record.category.trim().toLowerCase() === "lab";
 }
 
 export default function LabReportsScreen() {
+  const [sort, setSort] = useState<LabReportSort>("newest");
   const recordsQuery = useQuery({
     queryKey: ["medical-records"],
     queryFn: getMedicalRecords,
@@ -30,7 +33,7 @@ export default function LabReportsScreen() {
     );
   }
 
-  const reports = (recordsQuery.data ?? []).filter(isLabReport);
+  const reports = sortLabReports((recordsQuery.data ?? []).filter(isLabReport), sort);
 
   return (
     <View style={styles.container}>
@@ -38,6 +41,26 @@ export default function LabReportsScreen() {
       <Text style={styles.eyebrow}>MY HEALTH</Text>
       <Text style={styles.title}>Lab reports</Text>
       <Text style={styles.subtitle}>Lab reports available in your medical records.</Text>
+
+      <View style={styles.sortRow}>
+        <Text style={styles.sortLabel}>Sort</Text>
+        <Pressable
+          accessibilityRole="button"
+          accessibilityState={{ selected: sort === "newest" }}
+          onPress={() => setSort("newest")}
+          style={[styles.sortChip, sort === "newest" && styles.sortChipActive]}
+        >
+          <Text style={[styles.sortText, sort === "newest" && styles.sortTextActive]}>Newest</Text>
+        </Pressable>
+        <Pressable
+          accessibilityRole="button"
+          accessibilityState={{ selected: sort === "oldest" }}
+          onPress={() => setSort("oldest")}
+          style={[styles.sortChip, sort === "oldest" && styles.sortChipActive]}
+        >
+          <Text style={[styles.sortText, sort === "oldest" && styles.sortTextActive]}>Oldest</Text>
+        </Pressable>
+      </View>
 
       <FlatList
         data={reports}
@@ -64,6 +87,12 @@ const styles = StyleSheet.create({
   eyebrow:{color:colors.primary,fontSize:11,fontWeight:"800",letterSpacing:1},
   title:{color:colors.text,fontSize:typography.title,fontWeight:"800",marginTop:spacing.sm},
   subtitle:{color:colors.textSecondary,fontSize:14,lineHeight:21,marginTop:spacing.sm,marginBottom:spacing.md},
+  sortRow:{flexDirection:"row",alignItems:"center",gap:spacing.xs,marginBottom:spacing.md},
+  sortLabel:{color:colors.textSecondary,fontSize:13,fontWeight:"700",marginRight:spacing.xs},
+  sortChip:{paddingHorizontal:spacing.md,paddingVertical:spacing.xs,borderRadius:999,borderWidth:1,borderColor:colors.border,backgroundColor:colors.surface},
+  sortChipActive:{backgroundColor:colors.primary,borderColor:colors.primary},
+  sortText:{color:colors.textSecondary,fontSize:12,fontWeight:"700"},
+  sortTextActive:{color:"#fff"},
   list:{gap:spacing.sm,paddingBottom:spacing.xl},
   emptyList:{flexGrow:1,justifyContent:"center"},
   card:{padding:spacing.md,borderRadius:16,borderWidth:1,borderColor:colors.border,backgroundColor:colors.surface,flexDirection:"row",alignItems:"center",justifyContent:"space-between"},
