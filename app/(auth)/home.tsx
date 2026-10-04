@@ -2,6 +2,7 @@ import { Link } from "expo-router";
 import { StyleSheet, Text, View } from "react-native";
 import { colors, spacing, typography } from "@/theme";
 import { useAuthStore } from "@/stores/authStore";
+import { signOut } from "@/features/auth/signOut";
 
 export default function HomeScreen() {
   const user = useAuthStore((state) => state.user);
