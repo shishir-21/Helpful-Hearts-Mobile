@@ -337,7 +337,7 @@ The repository also contains GitHub Actions workflows for CI and production Andr
 
 - [ARCHITECTURE.md](ARCHITECTURE.md)
 - [DEVELOPMENT_PLAN.md](DEVELOPMENT_PLAN.md)
-- [CONTRIBUTING.md)
+- [CONTRIBUTING.md](CONTRIBUTING.md)
 
 ## Project Status
 
