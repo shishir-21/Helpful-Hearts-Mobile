@@ -1,10 +1,10 @@
-# Helpful-Hearts Mobile
+# Helpful Hugs
 
 Production-oriented React Native mobile application for Helpful-Hearts.
 
 ## Why I Built This App
 
-I built Helpful-Hearts because accessing healthcare can be difficult when people need the right doctor, an appointment, or a simple explanation of their medical information.
+I built Helpful Hugs because accessing healthcare can be difficult when people need the right doctor, an appointment, or a simple explanation of their medical information.
 
 The goal is to bring important healthcare workflows into one mobile experience — from discovering doctors and checking availability to booking appointments, managing prescriptions, and getting easy-to-understand health information.
 
