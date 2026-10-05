@@ -1,6 +1,6 @@
 # Helpful Hugs
 
-Production-oriented React Native mobile application for Helpful-Hearts.
+Production-oriented React Native mobile application for Helpful Hugs
 
 ## Why I Built This App
 
