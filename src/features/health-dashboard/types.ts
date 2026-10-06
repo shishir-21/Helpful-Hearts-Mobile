@@ -13,10 +13,15 @@ export type HealthDashboardSummary = {
     | null;
 };
 
-function latestDate(items: Array<{ date: string; title: string }>) {
-  return [...items]
-    .filter((item) => Number.isFinite(new Date(item.date).getTime()))
-    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())[0] ?? null;
+type HealthActivity = NonNullable<HealthDashboardSummary["latestActivity"]>;
+
+function latestDate(items: HealthActivity[]): HealthActivity | null {
+  return (
+    [...items]
+      .filter((item) => Number.isFinite(new Date(item.date).getTime()))
+      .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())[0] ??
+    null
+  );
 }
 
 export function buildHealthDashboardSummary(
@@ -32,14 +37,16 @@ export function buildHealthDashboardSummary(
         (appointment) =>
           Number.isFinite(new Date(appointment.starts_at).getTime()) &&
           new Date(appointment.starts_at).getTime() >= nowMs &&
-          !["cancelled", "canceled", "rejected"].includes(appointment.status.toLowerCase()),
+          !["cancelled", "canceled", "rejected"].includes(
+            appointment.status.toLowerCase(),
+          ),
       )
       .sort(
         (a, b) =>
           new Date(a.starts_at).getTime() - new Date(b.starts_at).getTime(),
       )[0] ?? null;
 
-  const activities = [
+  const activities: HealthActivity[] = [
     ...appointments.map((appointment) => ({
       kind: "appointment" as const,
       date: appointment.starts_at,
