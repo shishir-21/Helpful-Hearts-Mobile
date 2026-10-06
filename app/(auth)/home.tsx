@@ -9,12 +9,16 @@ import DoctorHomeScreen from "./doctor/index";
 
 export default function HomeScreen() {
   const user = useAuthStore((state) => state.user);
-  if (user?.role === "doctor") return <DoctorHomeScreen />;
+  const isDoctor = user?.role === "doctor";
   const firstName = user?.full_name?.split(" ")[0] ?? "there";
   const dashboardQuery = useQuery({
     queryKey: ["health-dashboard"],
     queryFn: getHealthDashboardSummary,
+    enabled: !isDoctor,
   });
+
+  if (isDoctor) return <DoctorHomeScreen />;
+
   return (
     <View style={styles.container}>
       <View style={styles.topRow}><View style={styles.headerCopy}><Text style={styles.eyebrow}>HELPFUL-HEARTS</Text><Text style={styles.title}>Hello, {firstName}</Text></View><Pressable style={styles.profileButton} onPress={() => router.push("/(auth)/profile")}><Text style={styles.profileText}>Profile</Text></Pressable></View>
