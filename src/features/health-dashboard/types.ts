@@ -15,10 +15,13 @@ export type HealthDashboardSummary = {
 
 type HealthActivity = NonNullable<HealthDashboardSummary["latestActivity"]>;
 
-function latestDate(items: HealthActivity[]): HealthActivity | null {
+function latestDate(items: HealthActivity[], nowMs: number): HealthActivity | null {
   return (
     [...items]
-      .filter((item) => Number.isFinite(new Date(item.date).getTime()))
+      .filter((item) => {
+        const dateMs = new Date(item.date).getTime();
+        return Number.isFinite(dateMs) && dateMs <= nowMs;
+      })
       .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())[0] ??
     null
   );
@@ -68,6 +71,6 @@ export function buildHealthDashboardSummary(
     upcomingAppointment,
     prescriptionCount: prescriptions.length,
     medicalRecordCount: records.length,
-    latestActivity: latestDate(activities),
+    latestActivity: latestDate(activities, nowMs),
   };
 }
