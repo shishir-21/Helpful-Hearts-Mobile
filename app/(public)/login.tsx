@@ -75,11 +75,6 @@ export default function LoginScreen() {
         )}
       />
 
-      <Link href="/(public)" asChild>
-        <Pressable style={styles.forgotLink}>
-          <Text style={styles.forgotText}>Forgot password?</Text>
-        </Pressable>
-      </Link>
 
       {serverError ? (
         <View style={styles.errorBox}>
@@ -215,16 +210,6 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
     fontSize: 16,
     fontWeight: "700",
-  },
-  forgotLink: {
-    alignSelf: "flex-end",
-    paddingVertical: spacing.xs,
-    marginBottom: spacing.sm,
-  },
-  forgotText: {
-    color: colors.primary,
-    fontWeight: "700",
-    fontSize: 13,
   },
   registerLink: {
     marginTop: spacing.md,
