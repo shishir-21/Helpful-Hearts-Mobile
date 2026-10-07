@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ActivityIndicator, FlatList, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+import { ActivityIndicator, FlatList, Pressable, RefreshControl, StyleSheet, Text, TextInput, View } from "react-native";
 import { router } from "expo-router";
 import { useQuery } from "@tanstack/react-query";
 import { DoctorCard } from "@/components/DoctorCard";
@@ -62,6 +62,12 @@ export default function DoctorsScreen() {
         data={doctors.data?.items ?? []}
         keyExtractor={(item) => item.id}
         contentContainerStyle={styles.list}
+        refreshControl={
+          <RefreshControl
+            refreshing={doctors.isRefetching}
+            onRefresh={() => void doctors.refetch()}
+          />
+        }
         renderItem={({ item }) => (
           <DoctorCard doctor={item} onPress={() => router.push(`/(auth)/doctors/${item.id}`)} />
         )}
