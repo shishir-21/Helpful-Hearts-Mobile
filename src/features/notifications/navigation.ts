@@ -1,6 +1,8 @@
+import { type Href } from "expo-router";
+
 export function getNotificationRoute(
   data: Record<string, unknown> | null | undefined,
-): string | null {
+): Href | null {
   if (data?.type !== "appointment_reminder") return null;
 
   const appointmentId = data.appointment_id;
